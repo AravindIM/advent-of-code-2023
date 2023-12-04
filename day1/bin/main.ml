@@ -1,27 +1,33 @@
 let file = "input.txt"
 
+let convert_to_digit ch = 
+  match ch with
+| '0'..'9' -> Some(int_of_char ch - int_of_char '0')
+| _ -> None
+
 let first_digit str =
-  let rec first_digit_from_index str index =
-    if index < String.length str then
-      try Some (int_of_string (String.make 1 str.[index]))
-      with Failure _ -> first_digit_from_index str (index + 1)
-    else None
+  let length = String.length str in
+  let rec first_digit_from_index index =
+    if index < length then
+      match convert_to_digit str.[index] with
+      | Some(digit) -> digit
+      | None -> first_digit_from_index(index + 1)
+    else 0
   in
-  first_digit_from_index str 0
+  first_digit_from_index 0
 
 let last_digit str =
-  let rec last_digit_from_index str index =
+  let rec last_digit_from_index index =
     if index >= 0 then
-      try Some (int_of_string (String.make 1 str.[index]))
-      with Failure _ -> last_digit_from_index str (index - 1)
-    else None
+      match convert_to_digit str.[index] with
+      | Some(digit) -> digit
+      | None -> last_digit_from_index(index - 1)
+    else 0
   in
-  last_digit_from_index str (String.length str - 1)
+  last_digit_from_index 0
 
-let first_last str =
-  match first_digit str with
-  | None -> 0
-  | Some x -> ( (x * 10) + match last_digit str with None -> 0 | Some y -> y)
+let first_last str = 
+  first_digit str * 10 + last_digit str
 
 let () =
   let ic = open_in file in
