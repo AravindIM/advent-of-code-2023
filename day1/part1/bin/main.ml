@@ -10,21 +10,22 @@ let first_digit str =
   let rec first_digit_from_index index =
     if index < length then
       match convert_to_digit str.[index] with
-      | Some(digit) -> digit
-      | None -> first_digit_from_index(index + 1)
+      | Some digit -> digit
+      | None -> index + 1 |> first_digit_from_index
     else 0
   in
   first_digit_from_index 0
 
 let last_digit str =
+  let length = String.length str in
   let rec last_digit_from_index index =
     if index >= 0 then
       match convert_to_digit str.[index] with
       | Some(digit) -> digit
-      | None -> last_digit_from_index(index - 1)
+      | None -> index - 1 |> last_digit_from_index
     else 0
   in
-  last_digit_from_index 0
+  length -1 |> last_digit_from_index
 
 let first_last str = 
   first_digit str * 10 + last_digit str
@@ -39,5 +40,5 @@ let () =
         0
   in
   let answer = sum_of_lines () in
-  print_endline (string_of_int answer);
+  string_of_int answer |> print_endline;
   flush stdout
